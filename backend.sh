@@ -46,14 +46,20 @@ else
     echo " User already exist.....SKIPING "
 fi 
 
-mkdir /app &>>$LOG_FILE_NAME
+mkdir -p /app &>>$LOG_FILE_NAME
 VALIDATE $? "creating a directory to download"
+
+rm -rf /tmp/backend.zip &>>$LOG_FILE_NAME
+VALIDATE $? "Removing existing version of code"
 
 curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip &>>$LOG_FILE_NAME
 VALIDATE $? "Downloading backend app"
 
 cd /app 
 VALIDATE $? "moving to app dir success"
+
+rm -rf /app/* &>>$LOG_FILE_NAME
+VALIDATE $? "Removing existing version of code"
 
 unzip /tmp/backend.zip &>>$LOG_FILE_NAME
 VALIDATE $? "unzip backend"
